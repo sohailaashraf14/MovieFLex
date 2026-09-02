@@ -38,7 +38,7 @@ if (JSON.parse(localStorage.getItem("active-user"))) {
       //document.getElementById("message").innerHTML = "Registration successful!";
   
       setTimeout(function () {
-        location.href = "/index.html";
+        location.href = "/index2.html";
       }, 2000);
     } else if (
       password.value &&
