@@ -28,9 +28,15 @@
               <li><h3>blog</h3></li>
               <li><h3>contacts</h3></li>
 
-              <li><i class="fa-solid fa-magnifying-glass"></i></li>
+              <li class="nav-search">
+                <div class="search-box">
+                  <i class="fa-solid fa-magnifying-glass"></i>
+                  <input type="text" id="navSearchInput" placeholder="Search movies & shows..." autocomplete="off" />
+                </div>
+                <div class="search-dropdown" id="navSearchDropdown"></div>
+              </li>
               <li><i class="fa-solid fa-globe"></i> EN</li>
-              <li><h2 onclick="Signin()">Sign in</h2></li>
+              <li><h2 onclick="Signin()"> Sign in</h2></li>
             </ul>
           </div>
         </div>
@@ -45,7 +51,7 @@
       </div>
     </section>
     <section>
-      <div class="content ">
+      <div class="content">
         <h4>online streming</h4>
         <div>
           <ul>
