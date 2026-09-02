@@ -54,3 +54,75 @@ function GOTO(id, mt) {
   localStorage.setItem("result", JSON.stringify({ id: id, media_type: mt }));
   location.href = "profile_media.html";
 }
+
+/* ===================== NAV SEARCH DROPDOWN ===================== */
+let searchTimer = null;
+
+function initNavSearch() {
+  const input = document.getElementById("navSearchInput");
+  const dropdown = document.getElementById("navSearchDropdown");
+  if (!input || !dropdown) return;
+
+  input.addEventListener("input", () => {
+    const query = input.value.trim();
+    clearTimeout(searchTimer);
+
+    if (!query) {
+      dropdown.classList.remove("open");
+      dropdown.innerHTML = "";
+      return;
+    }
+
+    // debounce so we're not firing a request on every keystroke
+    searchTimer = setTimeout(() => runSearch(query, dropdown), 300);
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".nav-search")) {
+      dropdown.classList.remove("open");
+    }
+  });
+}
+
+async function runSearch(query, dropdown) {
+  dropdown.innerHTML = `<div class="search-hint">Searching...</div>`;
+  dropdown.classList.add("open");
+
+  try {
+    const res = await fetch(
+      `https://api.themoviedb.org/3/search/multi?api_key=${API_KEY}&query=${encodeURIComponent(query)}`
+    );
+    const json = await res.json();
+    const results = (json.results || [])
+      .filter((r) => r.media_type === "movie" || r.media_type === "tv")
+      .slice(0, 8);
+
+    if (results.length === 0) {
+      dropdown.innerHTML = `<div class="search-empty">No results for "${query}"</div>`;
+      return;
+    }
+
+    dropdown.innerHTML = results
+      .map((r) => {
+        const title = r.title || r.name || "Untitled";
+        const date = (r.release_date || r.first_air_date || "").split("-")[0];
+        const poster = r.poster_path
+          ? `https://image.tmdb.org/t/p/w92${r.poster_path}`
+          : "";
+        return `
+          <div class="search-result" onclick="GOTO('${r.id}','${r.media_type}')">
+            ${poster ? `<img src="${poster}" alt="" />` : `<div style="width:40px;height:56px;background:#333;border-radius:4px;"></div>`}
+            <div class="meta">
+              <h5>${title}</h5>
+              <span>${date || r.media_type}</span>
+            </div>
+          </div>
+        `;
+      })
+      .join("");
+  } catch (err) {
+    dropdown.innerHTML = `<div class="search-empty">Search failed, try again</div>`;
+  }
+}
+
+document.addEventListener("DOMContentLoaded", initNavSearch);
