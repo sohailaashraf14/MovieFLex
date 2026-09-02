@@ -14,7 +14,7 @@ if (JSON.parse(localStorage.getItem("active-user"))) {
         if (Users[i].email == email.value && Users[i].password == password.value) {
           alert("Login successful!");
           localStorage.setItem("active-user", JSON.stringify(Users[i]));
-          location.href = "/index2.html";
+          location.href = "index2.html";
           return;
         }
       }
