@@ -3,7 +3,7 @@ let password = document.querySelector("#password");
 let signin_btn=document.querySelector("#signin-btn");
 let Users = JSON.parse(localStorage.getItem("users")) || [];
 if (JSON.parse(localStorage.getItem("active-user"))) {
-    location.href = "/index2.html";
+    location.href = "index2.html";
   }
   function Signin(){
     if (Users.length == 0) {
