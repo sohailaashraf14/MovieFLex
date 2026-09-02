@@ -125,4 +125,7 @@ async function runSearch(query, dropdown) {
   }
 }
 
-document.addEventListener("DOMContentLoaded", initNavSearch);
+// script is loaded at the end of <body>, so the DOM is already parsed
+// by the time this runs — call directly instead of waiting on an event
+// that already fired before this script executed.
+initNavSearch();
